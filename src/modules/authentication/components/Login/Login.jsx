@@ -4,7 +4,10 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-export default function Login() {
+import { useState } from "react";
+// eslint-disable-next-line react/prop-types
+export default function Login({ saveLoginData }) {
+  const [loading, setLoading] = useState(false);
   let navigate = useNavigate();
   let {
     register,
@@ -12,11 +15,14 @@ export default function Login() {
     handleSubmit,
   } = useForm();
   const onSubmit = async (data) => {
+    setLoading(true);
     try {
       let response = await axios.post(
         "https://upskilling-egypt.com:3006/api/v1/Users/Login",
         data
       );
+      localStorage.setItem("token", response.data.token);
+      saveLoginData();
       toast.success("logged sucessfully");
       console.log(response);
       console.log(data);
@@ -24,8 +30,11 @@ export default function Login() {
       navigate("/Dashboard");
     } catch (error) {
       toast.error(error.response.data.message);
+      setLoading(false);
 
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -88,22 +97,25 @@ export default function Login() {
                     </span>
                   )}
 
-                  <div className="Links d-flex justify-content-between ">
+                  <div className="Links d-flex justify-content-between mb-3 ">
                     <Link
                       className="text-decoration-none text-black"
-                      to="Register"
+                      to="register"
                     >
                       Register
                     </Link>
                     <Link
                       className="text-decoration-none text-success"
-                      to="Forget"
+                      to="forget-password"
                     >
                       Forget Your Password
                     </Link>
                   </div>
-                  <button className="btn btn-success w-100 rounded rounded-2">
-                    Login
+                  <button
+                    className="btn btn-success w-100 rounded rounded-2"
+                    disabled={loading}
+                  >
+                    {loading ? "Loading..." : "Submit"}
                   </button>
                 </form>
               </div>

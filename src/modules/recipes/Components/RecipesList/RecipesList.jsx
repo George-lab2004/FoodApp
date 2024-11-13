@@ -4,31 +4,35 @@ import axios from "axios";
 import ConfirmDelete from "../../../shared/Components/ConfrimDelete/ConfirmDelete";
 import { toast } from "react-toastify";
 
-export default function CategoriesList() {
-  const [categoriesList, setCategoriesList] = useState([]);
+export default function RecipesList() {
+  const [RecipesList, setRecipesList] = useState([]);
   const [selectedId, setSelectedId] = useState(0);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const getCategories = async () => {
+  const getRecipies = async () => {
     setLoading(true);
+
     try {
       const response = await axios.get(
-        "https://upskilling-egypt.com:3006/api/v1/Category/?pageSize=10&pageNumber=1",
+        "https://upskilling-egypt.com:3006/api/v1/Recipe/?pageSize=10&pageNumber=1",
         {
           headers: { Authorization: localStorage.getItem("token") },
         }
       );
-      setCategoriesList(response.data.data);
+      console.log(response?.data + "THATS FOR RECIPES SIUUUU");
+
+      setRecipesList(response.data.data);
     } catch (error) {
+      setLoading(false);
+
       console.log(error);
     } finally {
       setLoading(false);
     }
   };
-
   useEffect(() => {
-    getCategories();
+    getRecipies();
   }, []);
 
   const handleShow = (id) => {
@@ -39,7 +43,7 @@ export default function CategoriesList() {
   const handleDelete = async () => {
     try {
       await axios.delete(
-        `https://upskilling-egypt.com:3006/api/v1/Category/${selectedId}`,
+        `https://upskilling-egypt.com:3006/api/v1/Recipe/${selectedId}`,
         {
           headers: { Authorization: localStorage.getItem("token") },
         }
@@ -47,7 +51,7 @@ export default function CategoriesList() {
       toast.success("Deleted sucessfully");
 
       setShow(false);
-      getCategories(); // Refresh categories list after deletion
+      getRecipies();
     } catch (error) {
       console.log(error);
     }
@@ -56,27 +60,20 @@ export default function CategoriesList() {
   return (
     <>
       <Header
-        title="Categories List"
+        title="Recipies items"
         description="You can now add your items that any user can order it from the Application and you can edit"
       />
       <ConfirmDelete
         show={show}
-        deleteItem="Category"
+        deleteItem="Recipe"
         deleteFun={handleDelete}
         toggleShow={() => setShow(false)}
       />
       <div className="d-flex justify-content-between">
-        <div className="flex-column ms-2 ">
-          <h3 className="Poppins mt-2">Categories Table Details</h3>
-          <p className="poppins">You can check all details</p>
-        </div>
-
-        <button className="btn btn-success m-2 fw-bold fs-5 h-25">
-          Add New Category
-        </button>
+        <h3>Recipes Table Details</h3>
+        <button className="btn btn-success m-3">Add New Recipe</button>
       </div>
       <div className="p-4">
-        {/* Show loading spinner if loading is true */}
         {loading ? (
           <div className="loader mx-auto"></div>
         ) : (
@@ -84,19 +81,36 @@ export default function CategoriesList() {
             <thead>
               <tr>
                 <th scope="col">Name</th>
-                <th scope="col">Creation Date</th>
+                <th scope="col">Image</th>
+                <th scope="col">Price</th>
+                <th scope="col">Description</th>
+                <th scope="col">Tag</th>
+                <th scope="col">Category</th>
+
                 <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {categoriesList.map((category) => (
-                <tr key={category.id}>
-                  <td>{category.name}</td>
-                  <td>{category.creationDate}</td>
+              {RecipesList.map((Recipes) => (
+                <tr key={Recipes.id}>
+                  <td>{Recipes.name}</td>
+                  <td>
+                    <img
+                      src={`https://upskilling-egypt.com:3006/${Recipes.imagePath}`}
+                      alt={Recipes.name}
+                      className="w-25"
+                    />
+                  </td>
+
+                  <td>{Recipes.price} $</td>
+                  <td>{Recipes.description}</td>
+                  <td>{Recipes.tag.id}</td>
+                  <td>{Recipes.category}</td>
+
                   <td>
                     <i
                       className="fa fa-trash text-danger me-4"
-                      onClick={() => handleShow(category.id)}
+                      onClick={() => handleShow(Recipes.id)}
                       aria-hidden="true"
                     ></i>
                     <i

@@ -4,7 +4,9 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
 export default function ForgetPass() {
+  const [loading, setLoading] = useState(false);
   let navigate = useNavigate();
   let {
     register,
@@ -12,6 +14,7 @@ export default function ForgetPass() {
     handleSubmit,
   } = useForm();
   const onSubmit = async (data) => {
+    setLoading(true);
     try {
       let response = await axios.post(
         "https://upskilling-egypt.com:3006/api/v1/Users/Reset/Request",
@@ -20,12 +23,15 @@ export default function ForgetPass() {
       console.log(response);
       console.log(data);
 
-      navigate("/Reset");
+      navigate("/reset-password");
       toast.success(response.data.message);
     } catch (error) {
       toast.error(error.response.data.message);
+      setLoading(false);
 
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -42,7 +48,7 @@ export default function ForgetPass() {
                   <h3 className=" fw-bold">Forgot Your Password?</h3>
                   <span className="text-muted">
                     No worries! Please enter your email and we will send a
-                    password reset link{" "}
+                    password reset link
                   </span>
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -69,8 +75,11 @@ export default function ForgetPass() {
                     <span className="text-danger ">{errors.email.message}</span>
                   )}
 
-                  <button className="btn btn-success w-100 rounded rounded-2">
-                    Submit
+                  <button
+                    className="btn btn-success w-100 rounded rounded-2"
+                    disabled={loading}
+                  >
+                    {loading ? "Loading..." : "Submit"}
                   </button>
                 </form>
               </div>

@@ -1,7 +1,7 @@
 // App.jsx
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import UsersList from "./modules/users/Components/UsersList/UsersList";
-import RecipesList from "./modules/recipes/Components/RecipesList/RecipiesList";
+import RecipesList from "./modules/recipes/Components/RecipesList/RecipesList";
 import RecipiesData from "./modules/recipes/Components/RecipesData/RecipesData";
 import CategoryData from "./modules/categories/Components/CategoryData/CategoryData";
 import CategoriesList from "./modules/categories/Components/CategoriesList/CategoriesList";
@@ -16,37 +16,57 @@ import MasterLayout from "./modules/shared/Components/MasterLayout/MasterLayout"
 import "./index.css";
 import "./App.css";
 import { ToastContainer } from "react-toastify";
-
-const routes = createBrowserRouter([
-  {
-    path: "/",
-    element: <AuthLayout />,
-    errorElement: <NotFound />,
-    children: [
-      { index: true, element: <Login /> }, // Home page
-      { path: "Register", element: <Registeration /> },
-      { path: "login", element: <Login /> },
-      { path: "Reset", element: <ResetPass /> },
-      { path: "Forget", element: <ForgetPass /> },
-      { path: "login/Forget", element: <ForgetPass /> },
-      { path: "ChangePass", element: <ChangePass /> },
-    ],
-  },
-  {
-    path: "DashBoard",
-    element: <MasterLayout />,
-    errorElement: <NotFound />,
-    children: [
-      { path: "users", element: <UsersList /> },
-      { path: "recipes", element: <RecipesList /> },
-      { path: "recipe-Data", element: <RecipiesData /> },
-      { path: "categories", element: <CategoriesList /> },
-      { path: "category-Data", element: <CategoryData /> },
-    ],
-  },
-]);
-
+import { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
+import ProtectedRoute from "./modules/shared/Components/ProtectedRoute/ProtectedRoute";
+import Dashboard from "./modules/Dashboard/components/Dashboard/Dashboard";
 function App() {
+  // eslint-disable-next-line no-unused-vars
+  const [loginData, setLoginData] = useState(null);
+  let saveLoginData = () => {
+    let decodedToken = localStorage.getItem("token");
+    let encodedToken = jwtDecode(decodedToken);
+    console.log(encodedToken);
+    setLoginData(encodedToken);
+  };
+  useEffect(() => {
+    if (localStorage.getItem("token")) saveLoginData();
+  }, []);
+
+  const routes = createBrowserRouter([
+    {
+      path: "/",
+      element: <AuthLayout />,
+      errorElement: <NotFound />,
+      children: [
+        { index: true, element: <Login saveLoginData={saveLoginData} /> }, // Home page
+        { path: "register", element: <Registeration /> },
+        { path: "login", element: <Login saveLoginData={saveLoginData} /> },
+        { path: "reset-password", element: <ResetPass /> },
+        { path: "forget-password", element: <ForgetPass /> },
+        { path: "login/Forget", element: <ForgetPass /> },
+        { path: "change-password", element: <ChangePass /> },
+      ],
+    },
+    {
+      path: "DashBoard",
+      element: (
+        <ProtectedRoute loginData={loginData}>
+          <MasterLayout loginData={loginData} />
+        </ProtectedRoute>
+      ),
+      errorElement: <NotFound />,
+      children: [
+        { index: true, element: <Dashboard loginData={loginData} /> },
+        { path: "users", element: <UsersList loginData={loginData} /> },
+        { path: "recipes", element: <RecipesList /> },
+        { path: "recipe-Data", element: <RecipiesData /> },
+        { path: "categories", element: <CategoriesList /> },
+        { path: "category-Data", element: <CategoryData /> },
+      ],
+    },
+  ]);
+
   return (
     <>
       <RouterProvider router={routes} />

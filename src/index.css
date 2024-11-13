@@ -11,3 +11,108 @@
     rgba(0, 0, 0, 0.5)
   );
 }
+.-mt-1 {
+  margin-bottom: 30px !important;
+}
+.text-danger {
+  margin-top: -5px; /* Adjust this value as needed */
+  font-size: 0.9rem; /* Optional: make the font size a little smaller */
+}
+/* SideBar */
+.sidebar-container .ps-sidebar-container {
+  background-color: #1f263e;
+}
+
+.sidebar-container .ps-sidebar-container a {
+  color: #fff;
+}
+.sidebar-container img {
+  width: 7rem !important;
+}
+
+.sidebar-container img:hover {
+  background-color: #1f263e;
+}
+.logo-menu-item {
+  background-color: #1f263e !important;
+}
+.logo-menu-item .ps-menu-button {
+  background-color: #1f263e !important;
+}
+.sidebar-container .ps-menu-button:hover {
+  background-color: rgba(47, 140, 96, 0.5) !important;
+}
+.logo-menu-item:hover {
+  background-color: #1f263e !important;
+}
+/* Navbar */
+.avatar {
+  width: 40px !important;
+  height: 40px !important;
+  background-color: #f4ce9b;
+  border-radius: 100%;
+}
+/*  */
+.headercontainer {
+  border-radius: 1rem;
+  background-image: url("./assets/header-circles.svg"),
+    linear-gradient(90deg, rgba(21, 128, 61, 1) 31%, rgba(22, 163, 74, 1) 78%);
+  background-size: cover;
+  background-position: center center;
+  color: #fff;
+  position: relative;
+  height: 40vh;
+  background-repeat: no-repeat;
+}
+/* HTML: <div class="loader"></div> */
+.loader {
+  --r1: 154%;
+  --r2: 68.5%;
+  width: 60px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+      var(--r1) var(--r2) at top,
+      #0000 79.5%,
+      rgba(21, 128, 61, 1) 80%
+    ),
+    radial-gradient(
+      var(--r1) var(--r2) at bottom,
+      rgba(21, 128, 61, 1) 79.5%,
+      #0000 80%
+    ),
+    radial-gradient(
+      var(--r1) var(--r2) at top,
+      #0000 79.5%,
+      rgba(21, 128, 61, 1) 80%
+    ),
+    #ccc;
+  background-size: 50.5% 220%;
+  background-position: -100% 0%, 0% 0%, 100% 0%;
+  background-repeat: no-repeat;
+  animation: l9 2s infinite linear;
+}
+@keyframes l9 {
+  33% {
+    background-position: 0% 33%, 100% 33%, 200% 33%;
+  }
+  66% {
+    background-position: -100% 66%, 0% 66%, 100% 66%;
+  }
+  100% {
+    background-position: 0% 100%, 100% 100%, 200% 100%;
+  }
+}
+/* Fonts Needed */
+.poppins {
+  font-family: "Poppins", serif;
+}
+.sidebar-container {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.rounded-R {
+  border-top-right-radius: 50px; /* Adjust radius as desired */
+  overflow: hidden; /* Prevent content from overflowing the rounded corner */
+}
