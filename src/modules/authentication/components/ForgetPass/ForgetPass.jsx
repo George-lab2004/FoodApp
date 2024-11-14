@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
+import { axiosInstance, USERS_URLS } from "../../../../services/urls/urls";
 export default function ForgetPass() {
   const [loading, setLoading] = useState(false);
   let navigate = useNavigate();
@@ -16,10 +17,7 @@ export default function ForgetPass() {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      let response = await axios.post(
-        "https://upskilling-egypt.com:3006/api/v1/Users/Reset/Request",
-        data
-      );
+      let response = await axiosInstance.post(USERS_URLS.FORGET_PASS, data);
       console.log(response);
       console.log(data);
 
@@ -36,57 +34,44 @@ export default function ForgetPass() {
   };
   return (
     <>
-      <div className="auth-container">
-        <div className="container-fluid bg-overlay">
-          <div className="row vh-100  justify-content-center align-items-center">
-            <div className=" col-md-6 rounded rounded-2 px-5 py-3 m-4 col-lg-4 bg-white ">
-              <div>
-                <div className="logo-container text-center modal-content">
-                  <img className="w-75 bg-info" src={logo} alt="" />
-                </div>
-                <div className="title my-4 ">
-                  <h3 className=" fw-bold">Forgot Your Password?</h3>
-                  <span className="text-muted">
-                    No worries! Please enter your email and we will send a
-                    password reset link
-                  </span>
-                </div>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <div className="input-group mb-2">
-                    <span className="input-group-text " id="basic-addon1">
-                      <i className="fa fa-mobile" aria-hidden="true"></i>
-                    </span>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Enter Your Email"
-                      aria-label="email"
-                      aria-describedby="basic-addon1"
-                      {...register("email", {
-                        required: "Email is required",
-                        pattern: {
-                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]*\.[A-Z]{2,}$/i,
-                          message: "inavlid email",
-                        },
-                      })}
-                    />
-                  </div>
-                  {errors.email && (
-                    <span className="text-danger ">{errors.email.message}</span>
-                  )}
-
-                  <button
-                    className="btn btn-success w-100 rounded rounded-2"
-                    disabled={loading}
-                  >
-                    {loading ? "Loading..." : "Submit"}
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="title my-4 ">
+        <h3 className=" fw-bold">Forgot Your Password?</h3>
+        <span className="text-muted">
+          No worries! Please enter your email and we will send a password reset
+          link
+        </span>
       </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="input-group mb-2">
+          <span className="input-group-text " id="basic-addon1">
+            <i className="fa fa-mobile" aria-hidden="true"></i>
+          </span>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Enter Your Email"
+            aria-label="email"
+            aria-describedby="basic-addon1"
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]*\.[A-Z]{2,}$/i,
+                message: "inavlid email",
+              },
+            })}
+          />
+        </div>
+        {errors.email && (
+          <span className="text-danger ">{errors.email.message}</span>
+        )}
+
+        <button
+          className="btn btn-success w-100 rounded rounded-2"
+          disabled={loading}
+        >
+          {loading ? "Loading..." : "Submit"}
+        </button>
+      </form>
     </>
   );
 }

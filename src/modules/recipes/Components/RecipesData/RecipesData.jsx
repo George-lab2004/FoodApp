@@ -1,3 +1,3 @@
-export default function RecipiesData() {
-  return <div>RecipiesData</div>;
+export default function RecipesData() {
+  return <div>RecipesData</div>;
 }

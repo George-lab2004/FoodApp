@@ -3,6 +3,8 @@ import Header from "../../../shared/Components/Header/Header";
 import axios from "axios";
 import ConfirmDelete from "../../../shared/Components/ConfrimDelete/ConfirmDelete";
 import { toast } from "react-toastify";
+import NoData from "../../../shared/Components/NoData/NoData";
+import { axiosInstance, CATEGORY_URLS } from "../../../../services/urls/urls";
 
 export default function CategoriesList() {
   const [categoriesList, setCategoriesList] = useState([]);
@@ -13,12 +15,9 @@ export default function CategoriesList() {
   const getCategories = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        "https://upskilling-egypt.com:3006/api/v1/Category/?pageSize=10&pageNumber=1",
-        {
-          headers: { Authorization: localStorage.getItem("token") },
-        }
-      );
+      const response = await axiosInstance.get(CATEGORY_URLS.GET_CATEGORY, {
+        headers: { Authorization: localStorage.getItem("token") },
+      });
       setCategoriesList(response.data.data);
     } catch (error) {
       console.log(error);
@@ -38,13 +37,8 @@ export default function CategoriesList() {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(
-        `https://upskilling-egypt.com:3006/api/v1/Category/${selectedId}`,
-        {
-          headers: { Authorization: localStorage.getItem("token") },
-        }
-      );
-      toast.success("Deleted sucessfully");
+      await axiosInstance.delete(CATEGORY_URLS.DELETE_CATEGORY(selectedId)),
+        toast.success("Deleted sucessfully");
 
       setShow(false);
       getCategories(); // Refresh categories list after deletion
@@ -76,40 +70,44 @@ export default function CategoriesList() {
         </button>
       </div>
       <div className="p-4">
-        {/* Show loading spinner if loading is true */}
         {loading ? (
           <div className="loader mx-auto"></div>
-        ) : (
-          <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Creation Date</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {categoriesList.map((category) => (
-                <tr key={category.id}>
-                  <td>{category.name}</td>
-                  <td>{category.creationDate}</td>
-                  <td>
-                    <i
-                      className="fa fa-trash text-danger me-4"
-                      onClick={() => handleShow(category.id)}
-                      aria-hidden="true"
-                    ></i>
-                    <i
-                      className="fa fa-edit text-warning"
-                      aria-hidden="true"
-                    ></i>
-                  </td>
+        ) : categoriesList.length > 0 ? (
+          <div className="table-responsive">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Creation Date</th>
+                  <th scope="col">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {categoriesList.map((category) => (
+                  <tr key={category.id}>
+                    <td>{category.name}</td>
+                    <td>{category.creationDate}</td>
+                    <td>
+                      <i
+                        className="fa fa-trash text-danger me-4"
+                        onClick={() => handleShow(category.id)}
+                        aria-hidden="true"
+                      ></i>
+                      <i
+                        className="fa fa-edit text-warning"
+                        aria-hidden="true"
+                      ></i>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <NoData />
         )}
       </div>
+      ={" "}
     </>
   );
 }

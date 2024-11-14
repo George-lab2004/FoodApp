@@ -16,9 +16,7 @@ export default function SideBar() {
               onClick={toggleCollapse}
               icon={<img className="w-100  " src={logo} alt="" />}
               className="my-4 mx-auto "
-            >
-              {" "}
-            </MenuItem>
+            ></MenuItem>
             <MenuItem
               icon={<div className="fa fa-home mx-3 menu-item"></div>}
               component={<Link to="/Dashboard" />}

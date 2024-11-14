@@ -3,6 +3,8 @@ import Header from "../../../shared/Components/Header/Header";
 import axios from "axios";
 import ConfirmDelete from "../../../shared/Components/ConfrimDelete/ConfirmDelete";
 import { toast } from "react-toastify";
+import NoData from "../../../shared/Components/NoData/NoData";
+import { axiosInstance, RECIPE_URLS } from "../../../../services/urls/urls";
 
 export default function RecipesList() {
   const [RecipesList, setRecipesList] = useState([]);
@@ -14,12 +16,7 @@ export default function RecipesList() {
     setLoading(true);
 
     try {
-      const response = await axios.get(
-        "https://upskilling-egypt.com:3006/api/v1/Recipe/?pageSize=10&pageNumber=1",
-        {
-          headers: { Authorization: localStorage.getItem("token") },
-        }
-      );
+      const response = await axiosInstance.get(RECIPE_URLS.LIST);
       console.log(response?.data + "THATS FOR RECIPES SIUUUU");
 
       setRecipesList(response.data.data);
@@ -76,7 +73,7 @@ export default function RecipesList() {
       <div className="p-4">
         {loading ? (
           <div className="loader mx-auto"></div>
-        ) : (
+        ) : RecipesList.length > 0 ? (
           <table className="table">
             <thead>
               <tr>
@@ -86,7 +83,6 @@ export default function RecipesList() {
                 <th scope="col">Description</th>
                 <th scope="col">Tag</th>
                 <th scope="col">Category</th>
-
                 <th scope="col">Actions</th>
               </tr>
             </thead>
@@ -101,12 +97,10 @@ export default function RecipesList() {
                       className="w-25"
                     />
                   </td>
-
                   <td>{Recipes.price} $</td>
                   <td>{Recipes.description}</td>
                   <td>{Recipes.tag.id}</td>
                   <td>{Recipes.category}</td>
-
                   <td>
                     <i
                       className="fa fa-trash text-danger me-4"
@@ -122,6 +116,8 @@ export default function RecipesList() {
               ))}
             </tbody>
           </table>
+        ) : (
+          <NoData />
         )}
       </div>
     </>

@@ -45,6 +45,7 @@
 .logo-menu-item:hover {
   background-color: #1f263e !important;
 }
+
 /* Navbar */
 .avatar {
   width: 40px !important;
@@ -115,4 +116,7 @@
 .rounded-R {
   border-top-right-radius: 50px; /* Adjust radius as desired */
   overflow: hidden; /* Prevent content from overflowing the rounded corner */
+}
+.header-img img {
+  width: 50%;
 }
