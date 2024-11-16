@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import Header from "../../../shared/Components/Header/Header";
-import axios from "axios";
 import ConfirmDelete from "../../../shared/Components/ConfrimDelete/ConfirmDelete";
 import { toast } from "react-toastify";
 import NoData from "../../../shared/Components/NoData/NoData";
-import { axiosInstance, RECIPE_URLS } from "../../../../services/urls/urls";
+import {
+  axiosInstance,
+  IMAGE_PATHS,
+  RECIPE_URLS,
+} from "../../../../services/urls/urls";
 
 export default function RecipesList() {
   const [RecipesList, setRecipesList] = useState([]);
@@ -39,17 +42,14 @@ export default function RecipesList() {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(
-        `https://upskilling-egypt.com:3006/api/v1/Recipe/${selectedId}`,
-        {
-          headers: { Authorization: localStorage.getItem("token") },
-        }
-      );
+      await axiosInstance.delete(RECIPE_URLS.DELETE_LIST(selectedId));
       toast.success("Deleted sucessfully");
 
       setShow(false);
       getRecipies();
     } catch (error) {
+      toast.error(error);
+
       console.log(error);
     }
   };
@@ -64,7 +64,7 @@ export default function RecipesList() {
         show={show}
         deleteItem="Recipe"
         deleteFun={handleDelete}
-        toggleShow={() => setShow(false)}
+        closeModal={() => setShow(false)}
       />
       <div className="d-flex justify-content-between">
         <h3>Recipes Table Details</h3>
@@ -87,24 +87,24 @@ export default function RecipesList() {
               </tr>
             </thead>
             <tbody>
-              {RecipesList.map((Recipes) => (
-                <tr key={Recipes.id}>
-                  <td>{Recipes.name}</td>
+              {RecipesList.map((recipes) => (
+                <tr key={recipes.id}>
+                  <td>{recipes.name}</td>
                   <td>
                     <img
-                      src={`https://upskilling-egypt.com:3006/${Recipes.imagePath}`}
-                      alt={Recipes.name}
+                      src={`${IMAGE_PATHS}/${recipes.imagePath}`}
+                      alt={recipes.name}
                       className="w-25"
                     />
                   </td>
-                  <td>{Recipes.price} $</td>
-                  <td>{Recipes.description}</td>
-                  <td>{Recipes.tag.id}</td>
-                  <td>{Recipes.category}</td>
+                  <td>{recipes.price} $</td>
+                  <td>{recipes.description}</td>
+                  <td>{recipes.tag.id}</td>
+                  <td>{recipes.category[0]?.name}</td>
                   <td>
                     <i
                       className="fa fa-trash text-danger me-4"
-                      onClick={() => handleShow(Recipes.id)}
+                      onClick={() => handleShow(recipes.id)}
                       aria-hidden="true"
                     ></i>
                     <i

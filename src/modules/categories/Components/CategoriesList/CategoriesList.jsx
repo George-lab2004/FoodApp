@@ -1,16 +1,27 @@
 import { useEffect, useState } from "react";
 import Header from "../../../shared/Components/Header/Header";
-import axios from "axios";
 import ConfirmDelete from "../../../shared/Components/ConfrimDelete/ConfirmDelete";
 import { toast } from "react-toastify";
 import NoData from "../../../shared/Components/NoData/NoData";
 import { axiosInstance, CATEGORY_URLS } from "../../../../services/urls/urls";
+import Modal from "react-bootstrap/Modal";
+import { useForm } from "react-hook-form";
 
 export default function CategoriesList() {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    setValue,
+  } = useForm();
+  const [loading, setLoading] = useState(false);
   const [categoriesList, setCategoriesList] = useState([]);
   const [selectedId, setSelectedId] = useState(0);
   const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [showUpdate, setShowUpdate] = useState(false);
+  const [showAdd, setShowAdd] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const getCategories = async () => {
     setLoading(true);
@@ -34,16 +45,61 @@ export default function CategoriesList() {
     setSelectedId(id);
     setShow(true);
   };
+  const handleShowUpdate = (id) => {
+    const category = categoriesList.find((cat) => cat.id === id);
+    setSelectedId(id);
+    setSelectedCategory(category); // Set the category data to be updated
+    setShowUpdate(true);
+    // Pre-fill the form with the current category's data
+    setValue("name", category.name);
+  };
 
+  const handleShowAdd = () => {
+    setShowAdd(true);
+  };
+  const handlecloseAdd = () => {
+    setShowAdd(false);
+  };
+  const handlecloseUpdate = () => {
+    setShowUpdate(false);
+  };
   const handleDelete = async () => {
     try {
-      await axiosInstance.delete(CATEGORY_URLS.DELETE_CATEGORY(selectedId)),
-        toast.success("Deleted sucessfully");
-
+      await axiosInstance.delete(CATEGORY_URLS.DELETE_CATEGORY(selectedId));
+      toast.success("Deleted successfully");
       setShow(false);
       getCategories(); // Refresh categories list after deletion
     } catch (error) {
+      toast.error(error.message || "Something went wrong");
       console.log(error);
+    }
+  };
+
+  const handleUpdate = async (data) => {
+    try {
+      await axiosInstance.put(CATEGORY_URLS.CREATE_CATEGORY(selectedId), data);
+
+      toast.success("Updated successfully");
+      setShowUpdate(false);
+      getCategories(); // Refresh categories list after update
+    } catch (error) {
+      toast.error(error.message || "Something went wrong");
+      console.log(error);
+    }
+  };
+
+  const onSubmit = async (data) => {
+    setLoading(true);
+    try {
+      await axiosInstance.post(CATEGORY_URLS.CREATE_CATEGORY, data);
+      toast.success("Added successfully");
+      getCategories();
+      handlecloseAdd();
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message || "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -51,24 +107,86 @@ export default function CategoriesList() {
     <>
       <Header
         title="Categories List"
-        description="You can now add your items that any user can order it from the Application and you can edit"
+        description="You can now add your items that any user can order from the Application, and you can edit them"
       />
       <ConfirmDelete
         show={show}
         deleteItem="Category"
         deleteFun={handleDelete}
-        toggleShow={() => setShow(false)}
+        closeModal={() => setShow(false)}
       />
+      <Modal show={showAdd} onHide={handlecloseAdd}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add Category</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="input-group mb-2">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Category Name"
+                aria-label="name"
+                aria-describedby="basic-addon1"
+                {...register("name", { required: "Name is required" })}
+              />
+            </div>
+            {errors.name && (
+              <span className="text-danger">{errors.name.message}</span>
+            )}
+            <button
+              className="btn btn-success w-100 rounded rounded-2"
+              disabled={loading}
+            >
+              {loading ? "Loading..." : "Submit"}
+            </button>
+          </form>
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showUpdate} onHide={handlecloseUpdate}>
+        <Modal.Header closeButton>
+          <Modal.Title>Update Category</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={handleSubmit(handleUpdate)}>
+            <div className="input-group mb-2">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Category Name"
+                aria-label="name"
+                aria-describedby="basic-addon1"
+                {...register("name", { required: "Name is required" })}
+              />
+            </div>
+            {errors.name && (
+              <span className="text-danger">{errors.name.message}</span>
+            )}
+            <button
+              className="btn btn-success w-100 rounded rounded-2"
+              disabled={loading}
+            >
+              {loading ? "Loading..." : "Submit"}
+            </button>
+          </form>
+        </Modal.Body>
+      </Modal>
+
       <div className="d-flex justify-content-between">
-        <div className="flex-column ms-2 ">
-          <h3 className="Poppins mt-2">Categories Table Details</h3>
-          <p className="poppins">You can check all details</p>
+        <div className="flex-column ms-2">
+          <h3 className="Poppins mt-2 ms-5">Categories Table Details</h3>
+          <p className="poppins ms-5">You can check all details</p>
         </div>
 
-        <button className="btn btn-success m-2 fw-bold fs-5 h-25">
+        <button
+          onClick={handleShowAdd}
+          className="btn btn-success m-2 fw-bold fs-5 h-25"
+        >
           Add New Category
         </button>
       </div>
+
       <div className="p-4">
         {loading ? (
           <div className="loader mx-auto"></div>
@@ -95,6 +213,7 @@ export default function CategoriesList() {
                       ></i>
                       <i
                         className="fa fa-edit text-warning"
+                        onClick={() => handleShowUpdate(category.id)}
                         aria-hidden="true"
                       ></i>
                     </td>
@@ -107,7 +226,6 @@ export default function CategoriesList() {
           <NoData />
         )}
       </div>
-      ={" "}
     </>
   );
 }

@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import ProtectedRoute from "./modules/shared/Components/ProtectedRoute/ProtectedRoute";
 import Dashboard from "./modules/Dashboard/components/Dashboard/Dashboard";
+import RecipiesForm from "./modules/recipes/Components/RecipiesForm/RecipiesForm";
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [loginData, setLoginData] = useState(null);
@@ -59,6 +60,8 @@ function App() {
       children: [
         { index: true, element: <Dashboard loginData={loginData} /> },
         { path: "users", element: <UsersList loginData={loginData} /> },
+        { path: "recipes/:recipesId", element: <RecipiesForm /> },
+        { path: "recipes/new-recipe", element: <RecipiesForm /> },
         { path: "recipes", element: <RecipesList /> },
         { path: "recipe-Data", element: <RecipiesData /> },
         { path: "categories", element: <CategoriesList /> },

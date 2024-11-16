@@ -109,19 +109,24 @@ export default function ResetPass() {
               },
             })}
           />
-          <span
+          <button
             className="input-group-text"
             id="toggle-password"
             style={{ cursor: "pointer" }}
             onClick={() => setShowPassword(!showPassword)} // Toggle the password visibility
             aria-label={showPassword ? "Hide password" : "Show password"} // Add aria-label for screen readers
+            data-bs-toggle="tooltip" // Enables Bootstrap tooltip
+            title={showPassword ? "Hide password" : "Show password"} // Tooltip text
           >
             <i
               className={
                 showPassword ? "fa-regular fa-eye-slash" : "fa-regular fa-eye"
               }
             ></i>
-          </span>
+            <span className="mobile-text">
+              {showPassword ? "Hide Password" : "Show Password"}
+            </span>
+          </button>
         </div>
         {errors.password && (
           <span className="text-danger -mt-1">{errors.password.message}</span>
@@ -144,12 +149,15 @@ export default function ResetPass() {
                 value === getValues("password") || "Passwords must match", // Custom validation
             })}
           />
-          <span
+
+          <button
             className="input-group-text"
             id="toggle-confirm-password"
             style={{ cursor: "pointer" }}
             onClick={() => setShowConfirmPassword(!showConfirmPassword)} // Toggle confirm password visibility
+            data-bs-toggle="tooltip" // Enables Bootstrap tooltip
             aria-label={showConfirmPassword ? "Hide password" : "Show password"} // Add aria-label for screen readers
+            title={showPassword ? "Hide password" : "Show password"} // Tooltip text
           >
             <i
               className={
@@ -158,7 +166,10 @@ export default function ResetPass() {
                   : "fa-regular fa-eye"
               }
             ></i>
-          </span>
+            <span className="mobile-text">
+              {showPassword ? "Hide Password" : "Show Password"}
+            </span>
+          </button>
         </div>
         {errors.confirmPassword && (
           <span className="text-danger">{errors.confirmPassword.message}</span>

@@ -120,3 +120,16 @@
 .header-img img {
   width: 50%;
 }
+.mobile-text {
+  display: none;
+}
+
+/* Show text only on mobile */
+@media (max-width: 767px) {
+  .mobile-text {
+    display: inline-block;
+    font-size: 12px;
+    margin-left: 8px;
+    color: #000;
+  }
+}

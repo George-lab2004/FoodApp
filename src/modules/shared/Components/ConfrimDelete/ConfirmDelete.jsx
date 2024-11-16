@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import noData from "../../../../assets/noData.svg";
@@ -6,10 +7,10 @@ export default function ConfirmDelete({
   show,
   deleteItem,
   deleteFun,
-  toggleShow,
+  closeModal,
 }) {
   return (
-    <Modal show={show} onHide={toggleShow}>
+    <Modal show={show} onHide={closeModal}>
       <Modal.Header closeButton>
         <Modal.Title>Delete Confirmation</Modal.Title>
       </Modal.Header>
@@ -24,7 +25,7 @@ export default function ConfirmDelete({
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={toggleShow}>
+        <Button variant="secondary" onClick={closeModal}>
           Cancel
         </Button>
         <Button variant="danger" onClick={deleteFun}>
