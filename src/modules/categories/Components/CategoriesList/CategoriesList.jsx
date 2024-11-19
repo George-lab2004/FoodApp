@@ -78,7 +78,6 @@ export default function CategoriesList() {
   const handleUpdate = async (data) => {
     try {
       await axiosInstance.put(CATEGORY_URLS.CREATE_CATEGORY(selectedId), data);
-
       toast.success("Updated successfully");
       setShowUpdate(false);
       getCategories(); // Refresh categories list after update

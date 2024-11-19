@@ -8,6 +8,7 @@ import {
   IMAGE_PATHS,
   RECIPE_URLS,
 } from "../../../../services/urls/urls";
+import { Link } from "react-router-dom";
 
 export default function RecipesList() {
   const [RecipesList, setRecipesList] = useState([]);
@@ -68,7 +69,9 @@ export default function RecipesList() {
       />
       <div className="d-flex justify-content-between">
         <h3>Recipes Table Details</h3>
-        <button className="btn btn-success m-3">Add New Recipe</button>
+        <Link to="recipes/new-recipe" className="btn btn-success m-3">
+          Add New Recipe
+        </Link>
       </div>
       <div className="p-4">
         {loading ? (

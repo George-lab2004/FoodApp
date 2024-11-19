@@ -12,6 +12,8 @@ export const USERS_URLS = {
   FORGET_PASS: `Users/Reset/Request`,
   Reset_Pass: `/Users/Reset`,
   GET_USER: (id) => `/Users/${id}`,
+  GET_USERS_LIST: "/Users",
+  GET_Current_USERS_LIST: "current/Users",
 };
 // RECIPE_Urls'
 export const RECIPE_URLS = {
@@ -23,5 +25,5 @@ export const RECIPE_URLS = {
 export const CATEGORY_URLS = {
   GET_CATEGORY: `Category/?pageSize=10&pageNumber=1`,
   DELETE_CATEGORY: (id) => `/Category/${id}`,
-  CREATE_CATEGORY: (id) => `/Category/${id}`,
+  CREATE_CATEGORY: `/Category`,
 };
