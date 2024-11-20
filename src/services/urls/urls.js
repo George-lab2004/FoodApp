@@ -25,5 +25,6 @@ export const RECIPE_URLS = {
 export const CATEGORY_URLS = {
   GET_CATEGORY: `Category/?pageSize=10&pageNumber=1`,
   DELETE_CATEGORY: (id) => `/Category/${id}`,
+  Update_CATEGORY: (id) => `/Category/${id}`,
   CREATE_CATEGORY: `/Category`,
 };

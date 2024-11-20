@@ -110,10 +110,12 @@ export default function RecipesList() {
                       onClick={() => handleShow(recipes.id)}
                       aria-hidden="true"
                     ></i>
-                    <i
-                      className="fa fa-edit text-warning"
-                      aria-hidden="true"
-                    ></i>
+                    <Link to={`${recipes?.id}`}>
+                      <i
+                        className="fa fa-edit text-warning"
+                        aria-hidden="true"
+                      ></i>
+                    </Link>
                   </td>
                 </tr>
               ))}
