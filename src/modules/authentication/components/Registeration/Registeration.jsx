@@ -48,7 +48,7 @@ export default function Registeration() {
         </span>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="d-flex justify-content-center align-items-center gap-3">
+        <div className="d-flex justify-content-center align-items-center gap-3 position-relative">
           <div className="col-md-6">
             {" "}
             <div className="input-group mb-2">
@@ -209,22 +209,34 @@ export default function Registeration() {
               </button>
             </div>
             {errors.confirmPassword && (
-              <span className="text-danger">
+              <span className="text-danger ">
                 {errors.confirmPassword.message}
               </span>
             )}
           </div>
         </div>
+        <div>
+          <div className="input-group mb-2">
+            <span className="input-group-text " id="basic-addon1">
+              <i className="fa fa-message" aria-hidden="true"></i>
+            </span>
+            <input
+              type="file"
+              className="form-control"
+              placeholder="Upload your profile image"
+              aria-label="profileImage"
+              aria-describedby="basic-addon1"
+              {...register("profileImage")}
+            />
+          </div>
+          {errors.profileImage && (
+            <span className="text-danger ">{errors.profileImage.message}</span>
+          )}
+        </div>
 
         <div className="Links d-flex justify-content-between mb-3 ">
-          <Link className="text-decoration-none text-black" to="/register">
-            Register
-          </Link>
-          <Link
-            className="text-decoration-none text-success"
-            to="/forget-password"
-          >
-            Forget Your Password
+          <Link className="text-decoration-none text-black" to="/login">
+            Login Now
           </Link>
         </div>
         <button
