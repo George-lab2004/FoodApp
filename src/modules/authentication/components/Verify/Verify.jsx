@@ -1,4 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import logo from "../../../../assets/logo1.png";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -6,8 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
 import { axiosInstance, USERS_URLS } from "../../../../services/urls/urls";
 import { EMAIL_VALIDATION } from "../../../../services/urls/Validation";
-// eslint-disable-next-line react/prop-types
-export default function Login({ saveLoginData }) {
+export default function Verify() {
   const [loading, setLoading] = useState(false);
   let navigate = useNavigate();
   let {
@@ -18,14 +18,12 @@ export default function Login({ saveLoginData }) {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      let response = await axiosInstance.post(USERS_URLS.LOGIN, data);
-      localStorage.setItem("token", response.data.token);
-      saveLoginData();
-      toast.success("logged sucessfully");
+      let response = await axiosInstance.put(USERS_URLS.VERIFY, data);
       console.log(response);
       console.log(data);
 
-      navigate("/Dashboard");
+      navigate("/login");
+      toast.success(response.data.message);
     } catch (error) {
       toast.error(error.response.data.message);
       setLoading(false);
@@ -38,15 +36,13 @@ export default function Login({ saveLoginData }) {
   return (
     <>
       <div className="title my-4 ">
-        <h3>login</h3>
-        <span className="text-muted">
-          welcome Back! Please enter your details
-        </span>
+        <h3 className=" fw-bold">Verify Account</h3>
+        <span className="text-muted">Verify Your Account</span>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="input-group mb-2">
           <span className="input-group-text " id="basic-addon1">
-            <i className="fa fa-message" aria-hidden="true"></i>
+            <i className="fa fa-mobile" aria-hidden="true"></i>
           </span>
           <input
             type="text"
@@ -60,36 +56,24 @@ export default function Login({ saveLoginData }) {
         {errors.email && (
           <span className="text-danger ">{errors.email.message}</span>
         )}
-        <div className="input-group mb-3">
+
+        <div className="input-group mb-2">
           <span className="input-group-text " id="basic-addon1">
             <i className="fa fa-key" aria-hidden="true"></i>
           </span>
           <input
-            type="password"
+            type="text"
             className="form-control"
-            placeholder="Enter Your Password"
-            aria-label="Password"
+            placeholder="Enter Your Code"
+            aria-label="code"
             aria-describedby="basic-addon1"
-            {...register("password", {
-              required: "Password is required",
-            })}
+            {...register("code")}
           />
         </div>
-        {errors.password && (
-          <span className="text-danger">{errors.password.message}</span>
+        {errors.code && (
+          <span className="text-danger ">{errors.code.message}</span>
         )}
 
-        <div className="Links d-flex justify-content-between mb-3 ">
-          <Link className="text-decoration-none text-black" to="/register">
-            Register
-          </Link>
-          <Link
-            className="text-decoration-none text-success"
-            to="/forget-password"
-          >
-            Forget Your Password
-          </Link>
-        </div>
         <button
           className="btn btn-success w-100 rounded rounded-2"
           disabled={loading}

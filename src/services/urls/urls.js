@@ -14,12 +14,16 @@ export const USERS_URLS = {
   GET_USER: (id) => `/Users/${id}`,
   GET_USERS_LIST: "/Users",
   GET_Current_USERS_LIST: "current/Users",
+  REGISTER: `/Users/Register`,
+  VERIFY: `/Users/verify`,
 };
 // RECIPE_Urls'
 export const RECIPE_URLS = {
   LIST: `Recipe/?pageSize=10&pageNumber=1`,
   DELETE_LIST: (id) => `/Recipe/${id}`,
   CREATE_LIST: `Recipe/?pageSize=10&pageNumber=1`,
+  GET_LIST: (recipeId) => `/Recipe/${recipeId}`,
+  UPDATE_RECIPE: (recipeId) => `/Recipe/${recipeId}`,
 };
 //  Categories
 export const CATEGORY_URLS = {
@@ -27,4 +31,8 @@ export const CATEGORY_URLS = {
   DELETE_CATEGORY: (id) => `/Category/${id}`,
   Update_CATEGORY: (id) => `/Category/${id}`,
   CREATE_CATEGORY: `/Category`,
+};
+
+export const TAG_URLS = {
+  GET_TAGS: `tag/`,
 };

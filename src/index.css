@@ -110,7 +110,10 @@
 }
 .sidebar-container {
   height: 100vh;
-  overflow: hidden;
+  align-self: flex-start;
+  position: sticky;
+  left: 0;
+  top: 0;
 }
 
 .rounded-R {
@@ -163,7 +166,7 @@
 }
 .font-wrappers {
   margin-inline: 8.5rem;
-  margin-top: 5.25rem;
+  margin-block: 5.25rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -171,7 +174,8 @@
 .input-wrapper {
   width: 100%;
   input,
-  select text-area {
+  select,
+  textarea {
     width: 100%;
     padding: 1rem;
     background-color: #e0e0e0;

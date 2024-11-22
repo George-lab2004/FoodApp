@@ -21,6 +21,7 @@ import { jwtDecode } from "jwt-decode";
 import ProtectedRoute from "./modules/shared/Components/ProtectedRoute/ProtectedRoute";
 import Dashboard from "./modules/Dashboard/components/Dashboard/Dashboard";
 import RecipiesForm from "./modules/recipes/Components/RecipiesForm/RecipiesForm";
+import Verify from "./modules/authentication/components/Verify/Verify";
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [loginData, setLoginData] = useState(null);
@@ -47,6 +48,7 @@ function App() {
         { path: "forget-password", element: <ForgetPass /> },
         { path: "login/Forget", element: <ForgetPass /> },
         { path: "change-password", element: <ChangePass /> },
+        { path: "verify", element: <Verify /> },
       ],
     },
     {
