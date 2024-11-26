@@ -15,25 +15,34 @@ export default function RecipesList() {
   const [selectedId, setSelectedId] = useState(0);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [arrayOfPages, setArrayOfPages] = useState([]);
 
-  const getRecipies = async () => {
+  const getRecipies = async (pageNo, PageSize) => {
     setLoading(true);
 
     try {
-      const response = await axiosInstance.get(RECIPE_URLS.LIST);
+      const response = await axiosInstance.get(RECIPE_URLS.LIST, {
+        params: { pageSize: PageSize, pageNumber: pageNo },
+      });
       console.log(response?.data + "THATS FOR RECIPES SIUUUU");
 
+      // Dynamically setting pagination
+      setArrayOfPages(
+        Array(response.data.totalNumberOfPages)
+          .fill()
+          .map((_, i) => i + 1)
+      );
       setRecipesList(response.data.data);
     } catch (error) {
       setLoading(false);
-
       console.log(error);
     } finally {
       setLoading(false);
     }
   };
+
   useEffect(() => {
-    getRecipies();
+    getRecipies(1, 3);
   }, []);
 
   const handleShow = (id) => {
@@ -74,6 +83,30 @@ export default function RecipesList() {
         </Link>
       </div>
       <div className="p-4">
+        <div className="row">
+          <div className="col-md-6">
+            <input
+              type="text"
+              placeholder="Search here..."
+              className="form-control"
+            />
+          </div>
+          <div className="col-md-3">
+            <select className="form-control">
+              <option value="">1</option>
+              <option value="">1</option>
+              <option value="">1</option>
+            </select>
+          </div>
+          <div className="col-md-3">
+            {" "}
+            <select className="form-control">
+              <option value="">1</option>
+              <option value="">1</option>
+              <option value="">1</option>
+            </select>
+          </div>
+        </div>
         {loading ? (
           <div className="loader mx-auto"></div>
         ) : RecipesList.length > 0 ? (
@@ -110,7 +143,7 @@ export default function RecipesList() {
                       onClick={() => handleShow(recipes.id)}
                       aria-hidden="true"
                     ></i>
-                    <Link to={`${recipes?.id}`}>
+                    <Link to={`/Dashboard/recipes/${recipes?.id}`}>
                       <i
                         className="fa fa-edit text-warning"
                         aria-hidden="true"
@@ -125,6 +158,44 @@ export default function RecipesList() {
           <NoData />
         )}
       </div>
+      <nav
+        aria-label="Page navigation example"
+        className="justify-content-center d-flex"
+      >
+        <ul className="pagination">
+          <li className="page-item">
+            <a
+              className="page-link"
+              href="#"
+              aria-label="Previous"
+              onClick={() => getRecipies(1, 3)} // Navigate to the first page (or handle previous logic)
+            >
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {arrayOfPages.map((pageNo) => (
+            <li
+              // Highlight active page
+              key={pageNo}
+              onClick={() => getRecipies(pageNo, 3)}
+            >
+              <a className="page-link" href="#">
+                {pageNo}
+              </a>
+            </li>
+          ))}
+          <li className="page-item">
+            <a
+              className="page-link"
+              href="#"
+              aria-label="Next"
+              onClick={() => getRecipies(arrayOfPages.length, 3)} // Navigate to the last page (or handle next logic)
+            >
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </>
   );
 }

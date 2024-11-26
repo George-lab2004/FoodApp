@@ -13,16 +13,22 @@ import {
 export default function UsersList({ loginData }) {
   const [loading, setLoading] = useState(false);
   const [usersList, setusersList] = useState([]);
-  const [arrayOfPages, setArrayOfPages] = useState([23]);
-  const getUsers = async (pageNo, pageSize) => {
+  const [show, setShow] = useState(false);
+
+  const [arrayOfPages, setArrayOfPages] = useState([]);
+  const getUsers = async (pageNo, PageSize) => {
     setLoading(true);
 
     try {
       const response = await axiosInstance.get(USERS_URLS.GET_USERS_LIST, {
-        params: { pageSize: pageNo, pageNumber: pageSize },
+        params: { pageSize: PageSize, pageNumber: pageNo },
       });
       console.log(response?.data + "THATS FOR Users SIUUUU");
-
+      setArrayOfPages(
+        Array(response.data.totalNumberOfPages)
+          .fill()
+          .map((_, i) => i + 1)
+      );
       setusersList(response?.data?.data);
     } catch (error) {
       setLoading(false);
@@ -106,29 +112,40 @@ export default function UsersList({ loginData }) {
           className="justify-content-center d-flex"
         >
           <ul className="pagination">
+            {/* Previous Button */}
             <li className="page-item">
-              <a className="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
+              <a
+                className="page-link"
+                href="#"
+                aria-label="Previous"
+                onClick={() => getUsers(1, 3)} // Go to the first page
+              >
+                &laquo;
               </a>
             </li>
+
+            {/* First 8 Pages */}
+            {arrayOfPages.slice(0, 8).map((pageNo) => (
+              <li key={pageNo} className="page-item">
+                <a
+                  className="page-link"
+                  href="#"
+                  onClick={() => getUsers(pageNo, 3)}
+                >
+                  {pageNo}
+                </a>
+              </li>
+            ))}
+
+            {/* Next Button */}
             <li className="page-item">
-              <a className="page-link" href="#">
-                1
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                2
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                3
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
+              <a
+                className="page-link"
+                href="#"
+                aria-label="Next"
+                onClick={() => getUsers(8, 3)} // Go to the 8th page (or handle custom logic)
+              >
+                &raquo;
               </a>
             </li>
           </ul>

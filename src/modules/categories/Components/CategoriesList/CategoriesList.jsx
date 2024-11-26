@@ -22,13 +22,19 @@ export default function CategoriesList() {
   const [showAdd, setShowAdd] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [arrayOfPages, setArrayOfPages] = useState([]);
 
-  const getCategories = async () => {
+  const getCategories = async (pageNo, PageSize) => {
     setLoading(true);
     try {
       const response = await axiosInstance.get(CATEGORY_URLS.GET_CATEGORY, {
-        headers: { Authorization: localStorage.getItem("token") },
+        params: { pageSize: PageSize, pageNumber: pageNo },
       });
+      setArrayOfPages(
+        Array(response.data.totalNumberOfPages)
+          .fill()
+          .map((_, i) => i + 1)
+      );
       setCategoriesList(response.data.data);
     } catch (error) {
       console.log(error);
@@ -225,6 +231,44 @@ export default function CategoriesList() {
           <NoData />
         )}
       </div>
+      <nav
+        aria-label="Page navigation example"
+        className="justify-content-center d-flex"
+      >
+        <ul className="pagination">
+          <li className="page-item">
+            <a
+              className="page-link"
+              href="#"
+              aria-label="Previous"
+              onClick={() => getCategories(1, 3)} // Navigate to the first page (or handle previous logic)
+            >
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {arrayOfPages.map((pageNo) => (
+            <li
+              // Highlight active page
+              key={pageNo}
+              onClick={() => getCategories(pageNo, 3)}
+            >
+              <a className="page-link" href="#">
+                {pageNo}
+              </a>
+            </li>
+          ))}
+          <li className="page-item">
+            <a
+              className="page-link"
+              href="#"
+              aria-label="Next"
+              onClick={() => getCategories(arrayOfPages.length, 3)} // Navigate to the last page (or handle next logic)
+            >
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </>
   );
 }

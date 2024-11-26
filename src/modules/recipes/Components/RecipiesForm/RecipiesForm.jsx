@@ -6,21 +6,25 @@ import {
   RECIPE_URLS,
   TAG_URLS,
 } from "../../../../services/urls/urls";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { toast } from "react-toastify";
 
 export default function RecipesForm() {
   const params = useParams();
   const [CategoriesList, setCategoriesList] = useState([]);
+  // const [isDataLoaded, setIsDataLoaded] = useState(false);
+  // const initialValuesRef = useRef({});
+
   const [Tags, setTags] = useState([]);
   const navigate = useNavigate();
   const recipeId = params.recipeId;
-  const isNewRecipe = recipeId;
-
+  const isNewRecipe = params.recipeId;
   const {
     formState: { isSubmitting, errors },
     handleSubmit,
     register,
     setValue,
+    getValues,
   } = useForm({ mode: "onChange" });
 
   const onSubmitHandler = async (data) => {
@@ -37,7 +41,7 @@ export default function RecipesForm() {
     try {
       let response;
 
-      if (!isNewRecipe) {
+      if (isNewRecipe) {
         // Perform POST action for creating a new recipe
         response = await axiosInstance.post(RECIPE_URLS.CREATE_LIST, formData);
       } else {
@@ -50,11 +54,18 @@ export default function RecipesForm() {
 
       // Navigate to the recipes dashboard after successful request
       navigate("/Dashboard/recipes");
+      toast.success(response.data.message);
       console.log(response);
     } catch (error) {
       console.error(error); // Log the error for debugging
+      toast.error(error);
     }
   };
+  // useEffect(() => {
+  //   if (isDataLoaded) {
+  //     initialValuesRef.current = getValues();
+  //   }
+  // }, [getValues, isDataLoaded]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,10 +74,7 @@ export default function RecipesForm() {
         setTags(tagsResponse?.data);
 
         const categoriesResponse = await axiosInstance.get(
-          CATEGORY_URLS.GET_CATEGORY,
-          {
-            headers: { Authorization: localStorage.getItem("token") },
-          }
+          CATEGORY_URLS.GET_CATEGORY
         );
         setCategoriesList(categoriesResponse?.data?.data);
 
@@ -86,6 +94,13 @@ export default function RecipesForm() {
       }
     };
     fetchData();
+
+    if (recipeId != "new-recipe") {
+      const getRecipe = async () => {
+        const response = await axiosInstance.get(RECIPE_URLS.GET_LIST);
+        console.log(response);
+      };
+    }
   }, [recipeId, setValue, isNewRecipe]);
 
   return (
