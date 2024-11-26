@@ -62,10 +62,7 @@ function App() {
       children: [
         { index: true, element: <Dashboard loginData={loginData} /> },
         { path: "users", element: <UsersList loginData={loginData} /> },
-        {
-          path: "recipes/recipes/new-recipe",
-          element: <RecipiesForm />,
-        },
+
         { path: "recipes/:recipesId", element: <RecipiesForm /> },
         { path: "recipes", element: <RecipesList /> },
         { path: "recipe-Data", element: <RecipiesData /> },

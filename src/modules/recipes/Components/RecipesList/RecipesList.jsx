@@ -5,8 +5,10 @@ import { toast } from "react-toastify";
 import NoData from "../../../shared/Components/NoData/NoData";
 import {
   axiosInstance,
+  CATEGORY_URLS,
   IMAGE_PATHS,
   RECIPE_URLS,
+  TAG_URLS,
 } from "../../../../services/urls/urls";
 import { Link } from "react-router-dom";
 
@@ -16,13 +18,21 @@ export default function RecipesList() {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [arrayOfPages, setArrayOfPages] = useState([]);
-
-  const getRecipies = async (pageNo, PageSize) => {
+  const [Tags, setTags] = useState([]);
+  const [CategoriesList, setCategoriesList] = useState([]);
+  const [nameValue, setnameValue] = useState("");
+  const getRecipies = async (pageNo, PageSize, name, category, tag) => {
     setLoading(true);
 
     try {
       const response = await axiosInstance.get(RECIPE_URLS.LIST, {
-        params: { pageSize: PageSize, pageNumber: pageNo },
+        params: {
+          pageSize: PageSize,
+          pageNumber: pageNo,
+          name: name,
+          tagId: tag,
+          catId: category,
+        },
       });
       console.log(response?.data + "THATS FOR RECIPES SIUUUU");
 
@@ -43,13 +53,18 @@ export default function RecipesList() {
 
   useEffect(() => {
     getRecipies(1, 3);
+    getTags();
+    getCategories();
   }, []);
 
   const handleShow = (id) => {
     setSelectedId(id);
     setShow(true);
   };
-
+  const getNameValue = (input) => {
+    setnameValue(input.target.value);
+    getRecipies(1, 3, input.target.value);
+  };
   const handleDelete = async () => {
     try {
       await axiosInstance.delete(RECIPE_URLS.DELETE_LIST(selectedId));
@@ -60,6 +75,24 @@ export default function RecipesList() {
     } catch (error) {
       toast.error(error);
 
+      console.log(error);
+    }
+  };
+  const getTags = async () => {
+    try {
+      const response = await axiosInstance.get(TAG_URLS.GET_TAGS);
+      console.log(response);
+      setTags(response?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getCategories = async () => {
+    try {
+      const response = await axiosInstance.get(CATEGORY_URLS.GET_CATEGORY);
+      setCategoriesList(response?.data?.data);
+    } catch (error) {
       console.log(error);
     }
   };
@@ -78,7 +111,7 @@ export default function RecipesList() {
       />
       <div className="d-flex justify-content-between">
         <h3>Recipes Table Details</h3>
-        <Link to="recipes/new-recipe" className="btn btn-success m-3">
+        <Link to="recipes" className="btn btn-success m-3">
           Add New Recipe
         </Link>
       </div>
@@ -89,21 +122,28 @@ export default function RecipesList() {
               type="text"
               placeholder="Search here..."
               className="form-control"
+              onChange={getNameValue}
             />
           </div>
           <div className="col-md-3">
             <select className="form-control">
-              <option value="">1</option>
-              <option value="">1</option>
-              <option value="">1</option>
+              <option value="">Tags</option>
+              {Tags.map(({ id, name }) => (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              ))}
             </select>
           </div>
           <div className="col-md-3">
             {" "}
             <select className="form-control">
-              <option value="">1</option>
-              <option value="">1</option>
-              <option value="">1</option>
+              <option value="">Categories</option>
+              {CategoriesList.map(({ id, name }) => (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              ))}
             </select>
           </div>
         </div>
