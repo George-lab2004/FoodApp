@@ -18,7 +18,7 @@ export default function RecipesForm() {
   const [Tags, setTags] = useState([]);
   const navigate = useNavigate();
   const recipeId = params.recipeId;
-  const isNewRecipe = params.recipeId;
+  const isNewRecipe = recipeId == "new-recipe";
   const {
     formState: { isSubmitting, errors },
     handleSubmit,
@@ -41,7 +41,7 @@ export default function RecipesForm() {
     try {
       let response;
 
-      if (isNewRecipe) {
+      if (!recipeId) {
         // Perform POST action for creating a new recipe
         response = await axiosInstance.post(RECIPE_URLS.CREATE_LIST, formData);
       } else {
@@ -68,38 +68,54 @@ export default function RecipesForm() {
   // }, [getValues, isDataLoaded]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const getTags = async () => {
       try {
         const tagsResponse = await axiosInstance.get(TAG_URLS.GET_TAGS);
         setTags(tagsResponse?.data);
 
-        const categoriesResponse = await axiosInstance.get(
-          CATEGORY_URLS.GET_CATEGORY
-        );
-        setCategoriesList(categoriesResponse?.data?.data);
-
-        if (!isNewRecipe) {
-          const recipeResponse = await axiosInstance.get(
-            RECIPE_URLS.GET_LIST(recipeId)
-          );
-          const recipe = recipeResponse?.data;
-          setValue("name", recipe?.name || "");
-          setValue("description", recipe?.description || "");
-          setValue("price", recipe?.price || "");
-          setValue("categoriesIds", recipe?.categoriesId?.[0]?.id || "");
-          setValue("tagId", recipe?.tagId?.id || "");
-        }
+        // if (!isNewRecipe) {
+        //   const recipeResponse = await axiosInstance.get(
+        //     RECIPE_URLS.GET_LIST(recipeId)
+        //   );
+        //   const recipe = recipeResponse?.data;
+        //   setValue("name", recipe?.name || "");
+        //   setValue("description", recipe?.description || "");
+        //   setValue("price", recipe?.price || "");
+        //   setValue("categoriesIds", recipe?.categoriesId?.[0]?.id || "");
+        //   setValue("tagId", recipe?.tagId?.id || "");
+        // }
       } catch (error) {
         console.log(error);
       }
     };
-    fetchData();
+    const getCategories = async () => {
+      try {
+        const categoriesResponse = await axiosInstance.get(
+          CATEGORY_URLS.GET_CATEGORY
+        );
 
+        setCategoriesList(categoriesResponse?.data?.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getCategories();
+    getTags();
+    async () => {};
     if (recipeId != "new-recipe") {
       const getRecipe = async () => {
-        const response = await axiosInstance.get(RECIPE_URLS.GET_LIST);
+        const response = await axiosInstance.get(
+          RECIPE_URLS.GET_LIST(recipeId)
+        );
         console.log(response);
+        const recipe = response?.data;
+        setValue("name", recipe?.name || "");
+        setValue("description", recipe?.description || "");
+        setValue("price", recipe?.price || "");
+        setValue("categoriesIds", recipe?.categoriesId?.[0]?.id || "");
+        setValue("tagId", recipe?.tagId?.id || "");
       };
+      getRecipe();
     }
   }, [recipeId, setValue, isNewRecipe]);
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Header from "../../../shared/Components/Header/Header";
 import ConfirmDelete from "../../../shared/Components/ConfrimDelete/ConfirmDelete";
 import { toast } from "react-toastify";
@@ -6,13 +6,16 @@ import NoData from "../../../shared/Components/NoData/NoData";
 import {
   axiosInstance,
   CATEGORY_URLS,
+  FAVORITES_URLS,
   IMAGE_PATHS,
   RECIPE_URLS,
   TAG_URLS,
 } from "../../../../services/urls/urls";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../../../context/AuthContext";
 
 export default function RecipesList() {
+  const { loginData } = useContext(AuthContext);
   const [RecipesList, setRecipesList] = useState([]);
   const [selectedId, setSelectedId] = useState(0);
   const [show, setShow] = useState(false);
@@ -21,7 +24,11 @@ export default function RecipesList() {
   const [Tags, setTags] = useState([]);
   const [CategoriesList, setCategoriesList] = useState([]);
   const [nameValue, setnameValue] = useState("");
-  const getRecipies = async (pageNo, PageSize, name, category, tag) => {
+
+  const [tagValue, setTagsValue] = useState("");
+  const [catValue, setCatValue] = useState("");
+
+  const getRecipies = async (pageNo, PageSize, name, tagId, categoryId) => {
     setLoading(true);
 
     try {
@@ -30,8 +37,8 @@ export default function RecipesList() {
           pageSize: PageSize,
           pageNumber: pageNo,
           name: name,
-          tagId: tag,
-          catId: category,
+          tagId: tagId,
+          categoryId: categoryId,
         },
       });
       console.log(response?.data + "THATS FOR RECIPES SIUUUU");
@@ -65,6 +72,14 @@ export default function RecipesList() {
     setnameValue(input.target.value);
     getRecipies(1, 3, input.target.value);
   };
+  const getTagValue = (input) => {
+    setTagsValue(input.target.value);
+    getRecipies(1, 3, nameValue, input.target.value, catValue);
+  };
+  const getCatValue = (input) => {
+    setCatValue(input.target.value);
+    getRecipies(1, 3, nameValue, tagValue, input.target.value);
+  };
   const handleDelete = async () => {
     try {
       await axiosInstance.delete(RECIPE_URLS.DELETE_LIST(selectedId));
@@ -75,6 +90,17 @@ export default function RecipesList() {
     } catch (error) {
       toast.error(error);
 
+      console.log(error);
+    }
+  };
+
+  const addToFavorite = async (id) => {
+    try {
+      const { data } = await axiosInstance.post(FAVORITES_URLS.ADD_FAVORITE, {
+        recipeId: id,
+      });
+      toast.success("Recipe is added to favorite sucsessfuly");
+    } catch (error) {
       console.log(error);
     }
   };
@@ -111,9 +137,14 @@ export default function RecipesList() {
       />
       <div className="d-flex justify-content-between">
         <h3>Recipes Table Details</h3>
-        <Link to="recipes" className="btn btn-success m-3">
-          Add New Recipe
-        </Link>
+
+        {loginData?.userGroup != "SystemUser" ? (
+          <Link to="recipes" className="btn btn-success m-3">
+            Add New Recipe
+          </Link>
+        ) : (
+          ""
+        )}
       </div>
       <div className="p-4">
         <div className="row">
@@ -126,7 +157,7 @@ export default function RecipesList() {
             />
           </div>
           <div className="col-md-3">
-            <select className="form-control">
+            <select onChange={getTagValue} className="form-control">
               <option value="">Tags</option>
               {Tags.map(({ id, name }) => (
                 <option key={id} value={id}>
@@ -137,7 +168,7 @@ export default function RecipesList() {
           </div>
           <div className="col-md-3">
             {" "}
-            <select className="form-control">
+            <select onChange={getCatValue} className="form-control">
               <option value="">Categories</option>
               {CategoriesList.map(({ id, name }) => (
                 <option key={id} value={id}>
@@ -150,50 +181,71 @@ export default function RecipesList() {
         {loading ? (
           <div className="loader mx-auto"></div>
         ) : RecipesList.length > 0 ? (
-          <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Image</th>
-                <th scope="col">Price</th>
-                <th scope="col">Description</th>
-                <th scope="col">Tag</th>
-                <th scope="col">Category</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {RecipesList.map((recipes) => (
-                <tr key={recipes.id}>
-                  <td>{recipes.name}</td>
-                  <td>
-                    <img
-                      src={`${IMAGE_PATHS}/${recipes.imagePath}`}
-                      alt={recipes.name}
-                      className="w-25"
-                    />
-                  </td>
-                  <td>{recipes.price} $</td>
-                  <td>{recipes.description}</td>
-                  <td>{recipes.tag.id}</td>
-                  <td>{recipes.category[0]?.name}</td>
-                  <td>
-                    <i
-                      className="fa fa-trash text-danger me-4"
-                      onClick={() => handleShow(recipes.id)}
-                      aria-hidden="true"
-                    ></i>
-                    <Link to={`/Dashboard/recipes/${recipes?.id}`}>
+          <div className="table-responsive">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Image</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Tag</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {RecipesList.map((recipes) => (
+                  <tr key={recipes.id}>
+                    <td>{recipes.name}</td>
+                    <td>
+                      <img
+                        src={`${IMAGE_PATHS}/${recipes.imagePath}`}
+                        alt={recipes.name}
+                        className="w-25"
+                      />
+                    </td>
+                    <td>{recipes.price} $</td>
+                    <td>{recipes.description}</td>
+                    <td>{recipes.tag.id}</td>
+                    <td>{recipes.category[0]?.name}</td>
+                    {/* <td>
                       <i
-                        className="fa fa-edit text-warning"
+                        className="fa fa-trash text-danger me-4"
+                        onClick={() => handleShow(recipes.id)}
                         aria-hidden="true"
                       ></i>
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                      <Link to={`/Dashboard/recipes/${recipes?.id}`}>
+                        <i
+                          className="fa fa-edit text-warning"
+                          aria-hidden="true"
+                        ></i>
+                      </Link>
+                    </td> */}
+
+                    {loginData?.userGroup != "SystemUser" ? (
+                      <td>
+                        <i
+                          className="fa fa-trash me-3 text-danger "
+                          onClick={() => handleShow(recipes.id)}
+                        ></i>
+                        <Link to={`/Dashboard/recipes/${recipes?.id}`}>
+                          <i className="fa fa-edit text-warning"></i>
+                        </Link>
+                      </td>
+                    ) : (
+                      <td>
+                        <i
+                          className="fa fa-heart text-danger cursor"
+                          onClick={() => addToFavorite(recipes.id)}
+                        ></i>
+                      </td>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>{" "}
+          </div>
         ) : (
           <NoData />
         )}

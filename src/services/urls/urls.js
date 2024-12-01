@@ -15,8 +15,10 @@ export const USERS_URLS = {
   GET_USER: (id) => `/Users/${id}`,
   GET_USERS_LIST: "/Users",
   GET_Current_USERS_LIST: "current/Users",
+  DELETE_USER: (id) => `/Users/${id}`,
   REGISTER: `/Users/Register`,
   VERIFY: `/Users/verify`,
+  CHANGE_PASSWORD: `/Users/ChangePassword`,
 };
 // RECIPE_Urls'
 export const RECIPE_URLS = {
@@ -36,4 +38,9 @@ export const CATEGORY_URLS = {
 
 export const TAG_URLS = {
   GET_TAGS: `tag/`,
+};
+export const FAVORITES_URLS = {
+  GET_FAVORITES: `/UserRecipe/`,
+  ADD_FAVORITE: `/UserRecipe/`,
+  DELETE_FAVORITE: (id) => `/UserRecipe/${id}`,
 };

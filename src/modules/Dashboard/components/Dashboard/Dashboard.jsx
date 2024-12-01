@@ -1,6 +1,10 @@
+import { AuthContext } from "../../../../context/AuthContext.jsx";
 import Header from "../../../shared/Components/Header/Header";
+import { useContext } from "react";
 
-export default function Dashboard({ loginData }) {
+export default function Dashboard() {
+  let { loginData } = useContext(AuthContext);
+
   return (
     <>
       <Header

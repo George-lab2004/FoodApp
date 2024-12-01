@@ -1,13 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { axiosInstance, USERS_URLS } from "../../../../services/urls/urls";
 import { EMAIL_VALIDATION } from "../../../../services/urls/Validation";
+import { AuthContext } from "../../../../context/AuthContext.jsx";
 // eslint-disable-next-line react/prop-types
-export default function Login({ saveLoginData }) {
+export default function Login() {
+  const { saveLoginData } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   let navigate = useNavigate();
   let {
