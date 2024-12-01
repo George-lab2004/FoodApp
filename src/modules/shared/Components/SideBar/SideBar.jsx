@@ -44,7 +44,7 @@ export default function SideBar() {
         data
       );
       toast.success(response.message);
-      localStorage.removeItem("foodAppToken");
+      localStorage.removeItem("token");
       navigate("/login");
       setShowModal(false);
     } catch (error) {
