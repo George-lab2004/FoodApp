@@ -41,15 +41,15 @@ export default function RecipesForm() {
     try {
       let response;
 
-      if (!recipeId) {
-        // Perform POST action for creating a new recipe
-        response = await axiosInstance.post(RECIPE_URLS.CREATE_LIST, formData);
-      } else {
-        // Perform PUT action for updating an existing recipe
+      if (!isNewRecipe) {
         response = await axiosInstance.put(
           `${RECIPE_URLS.UPDATE_RECIPE(recipeId)}`, // Append recipeId to the endpoint
           formData
         );
+        // Perform POST action for creating a new recipe
+      } else {
+        // Perform PUT action for updating an existing recipe
+        response = await axiosInstance.post(RECIPE_URLS.CREATE_LIST, formData);
       }
 
       // Navigate to the recipes dashboard after successful request
