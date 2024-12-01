@@ -53,7 +53,7 @@ function App() {
         { index: true, element: <Dashboard /> },
         { path: "users", element: <UsersList /> },
 
-        { path: "recipes/:recipesId", element: <RecipiesForm /> },
+        { path: "recipes/:recipeId", element: <RecipiesForm /> },
         { path: "recipes", element: <RecipesList /> },
         { path: "recipe-Data", element: <RecipiesData /> },
         { path: "categories", element: <CategoriesList /> },

@@ -98,47 +98,49 @@ export default function UsersList() {
         {loading ? (
           <div className="loader mx-auto"></div>
         ) : usersList.length > 0 ? (
-          <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Image</th>
-                <th scope="col">Phone Number</th>
-                <th scope="col">Email</th>
-                <th scope="col">Country</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {usersList.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.userName}</td>
-                  <td>
-                    {user.imagePath ? (
-                      <img
-                        src={`${IMAGE_PATHS}/${user.imagePath}`}
-                        alt={user.name}
-                        className="w-25"
-                      />
-                    ) : (
-                      <img className="w-25" src={noData2} alt={user.name} />
-                    )}
-                  </td>
-                  <td>{user.phoneNumber}</td>
-                  <td>{user.email}</td>
-                  <td>{user.country}</td>
-                  <td>
-                    <i
-                      className="fa fa-trash text-danger me-4"
-                      aria-hidden="true"
-                      onClick={() => handleShow(user.id)}
-                    ></i>
-                    <i className="fa fa-eye" aria-hidden="true"></i>
-                  </td>
+          <div className="table-responsive">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Image</th>
+                  <th scope="col">Phone Number</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Country</th>
+                  <th scope="col">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {usersList.map((user) => (
+                  <tr key={user.id}>
+                    <td>{user.userName}</td>
+                    <td>
+                      {user.imagePath ? (
+                        <img
+                          src={`${IMAGE_PATHS}/${user.imagePath}`}
+                          alt={user.name}
+                          className="w-25"
+                        />
+                      ) : (
+                        <img className="w-25" src={noData2} alt={user.name} />
+                      )}
+                    </td>
+                    <td>{user.phoneNumber}</td>
+                    <td>{user.email}</td>
+                    <td>{user.country}</td>
+                    <td>
+                      <i
+                        className="fa fa-trash text-danger me-4"
+                        aria-hidden="true"
+                        onClick={() => handleShow(user.id)}
+                      ></i>
+                      <i className="fa fa-eye" aria-hidden="true"></i>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
           <NoData />
         )}
