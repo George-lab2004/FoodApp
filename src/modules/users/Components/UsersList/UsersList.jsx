@@ -90,9 +90,6 @@ export default function UsersList() {
 
       <div className="d-flex justify-content-between">
         <h3 className="ms-3">Users Table Details</h3>
-        <Link to="user/new-recipe" className="btn btn-success m-3">
-          Add New User
-        </Link>
       </div>
       <div className="p-4">
         {loading ? (
