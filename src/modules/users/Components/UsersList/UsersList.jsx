@@ -131,7 +131,6 @@ export default function UsersList() {
                         aria-hidden="true"
                         onClick={() => handleShow(user.id)}
                       ></i>
-                      <i className="fa fa-eye" aria-hidden="true"></i>
                     </td>
                   </tr>
                 ))}
