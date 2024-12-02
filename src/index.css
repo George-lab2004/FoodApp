@@ -268,3 +268,10 @@
   right: 10px;
   cursor: pointer;
 }
+.table tbody tr:nth-child(even) {
+  background-color: #e2e5eb !important; /* Light grey */
+}
+
+.table tbody tr:nth-child(odd) {
+  background-color: white !important; /* White */
+}

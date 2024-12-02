@@ -8,6 +8,7 @@ import {
 } from "../../../../services/urls/urls";
 import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 export default function RecipesForm() {
   const params = useParams();
@@ -18,7 +19,6 @@ export default function RecipesForm() {
   const [Tags, setTags] = useState([]);
   const navigate = useNavigate();
   const recipeId = params.recipeId;
-  const isNewRecipe = recipeId == "new-recipe";
   const {
     formState: { isSubmitting, errors },
     handleSubmit,
@@ -39,33 +39,25 @@ export default function RecipesForm() {
     }
 
     try {
-      let response;
-
-      if (!isNewRecipe) {
-        response = await axiosInstance.put(
-          `${RECIPE_URLS.UPDATE_RECIPE(recipeId)}`, // Append recipeId to the endpoint
-          formData
-        );
-        // Perform POST action for creating a new recipe
-      } else {
-        // Perform PUT action for updating an existing recipe
-        response = await axiosInstance.post(RECIPE_URLS.CREATE_LIST, formData);
-      }
-
-      // Navigate to the recipes dashboard after successful request
-      navigate("/Dashboard/recipes");
-      toast.success(response.data.message);
+      let response = await axiosInstance[isNewRecipe ? "post" : "put"](
+        isNewRecipe
+          ? "https://upskilling-egypt.com:3006/api/v1/Recipe/"
+          : `https://upskilling-egypt.com:3006/api/v1/Recipe/${recipeId}`,
+        formData
+      );
       console.log(response);
+      navigate("/dashboard/recipes");
+      {
+        isNewRecipe
+          ? toast.success("Recipe created successfully")
+          : toast.success("Recipe updated successfully");
+      }
     } catch (error) {
-      console.error(error); // Log the error for debugging
-      toast.error(error);
+      console.log(error);
     }
   };
-  // useEffect(() => {
-  //   if (isDataLoaded) {
-  //     initialValuesRef.current = getValues();
-  //   }
-  // }, [getValues, isDataLoaded]);
+
+  const isNewRecipe = params.recipeId == undefined;
 
   useEffect(() => {
     const getTags = async () => {

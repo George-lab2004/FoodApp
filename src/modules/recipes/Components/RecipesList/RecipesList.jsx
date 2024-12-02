@@ -139,7 +139,10 @@ export default function RecipesList() {
         <h3>Recipes Table Details</h3>
 
         {loginData?.userGroup != "SystemUser" ? (
-          <Link to="recipes" className="btn btn-success m-3">
+          <Link
+            to="/dashboard/recipes/recipe-form"
+            className="btn btn-success m-3"
+          >
             Add New Recipe
           </Link>
         ) : (

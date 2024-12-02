@@ -57,7 +57,10 @@ function App() {
         { path: "recipes", element: <RecipesList /> },
         { path: "recipe-Data", element: <RecipiesData /> },
         { path: "categories", element: <CategoriesList /> },
-
+        {
+          path: "recipes/recipe-form",
+          element: <RecipiesForm />,
+        },
         { path: "category-Data", element: <CategoryData /> },
         {
           path: "favorites",

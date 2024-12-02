@@ -75,7 +75,9 @@ export default function Registeration() {
               />
             </div>
             {errors.userName && (
-              <span className="text-danger ">{errors.userName.message}</span>
+              <span className="text-danger d-block ">
+                {errors.userName.message}
+              </span>
             )}
             <div className="input-group mb-2">
               <span className="input-group-text " id="basic-addon1">
@@ -93,7 +95,9 @@ export default function Registeration() {
               />
             </div>
             {errors.country && (
-              <span className="text-danger ">{errors.country.message}</span>
+              <span className="text-danger d-block ">
+                {errors.country.message}
+              </span>
             )}
             <div className="input-group mb-2">
               <span className="input-group-text" id="basic-addon1">
@@ -129,7 +133,7 @@ export default function Registeration() {
               </button>
             </div>
             {errors.password && (
-              <span className="text-danger -mt-1">
+              <span className="text-danger d-block -mt-1">
                 {errors.password.message}
               </span>
             )}
@@ -150,7 +154,9 @@ export default function Registeration() {
               />
             </div>
             {errors.email && (
-              <span className="text-danger ">{errors.email.message}</span>
+              <span className="text-danger d-block ">
+                {errors.email.message}
+              </span>
             )}
             <div className="input-group mb-2">
               <span className="input-group-text " id="basic-addon1">
@@ -166,7 +172,9 @@ export default function Registeration() {
               />
             </div>
             {errors.phoneNumber && (
-              <span className="text-danger ">{errors.phoneNumber.message}</span>
+              <span className="text-danger d-block ">
+                {errors.phoneNumber.message}
+              </span>
             )}
             <div className="input-group mb-2">
               <span className="input-group-text" id="basic-addon1">
@@ -209,7 +217,7 @@ export default function Registeration() {
               </button>
             </div>
             {errors.confirmPassword && (
-              <span className="text-danger ">
+              <span className="text-danger d-block">
                 {errors.confirmPassword.message}
               </span>
             )}
@@ -230,7 +238,9 @@ export default function Registeration() {
             />
           </div>
           {errors.profileImage && (
-            <span className="text-danger ">{errors.profileImage.message}</span>
+            <span className="text-danger d-block ">
+              {errors.profileImage.message}
+            </span>
           )}
         </div>
 
