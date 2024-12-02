@@ -23,6 +23,8 @@ import RecipiesForm from "./modules/recipes/Components/RecipiesForm/RecipiesForm
 import Verify from "./modules/authentication/components/Verify/Verify";
 import { AuthContext } from "./context/AuthContext";
 import Favourites from "./modules/Favourites/Components/Favourites";
+import AdminProtectedComponent from "./modules/shared/Components/ProtectedComponent/AdminProtected";
+import UserProtectedComponent from "./modules/shared/Components/ProtectedComponent/UserProtected";
 function App() {
   const { loginData } = useContext(AuthContext);
   // eslint-disable-next-line no-unused-vars
@@ -51,12 +53,33 @@ function App() {
       errorElement: <NotFound />,
       children: [
         { index: true, element: <Dashboard /> },
-        { path: "users", element: <UsersList /> },
+        {
+          path: "users",
+          element: (
+            <AdminProtectedComponent>
+              <UsersList />
+            </AdminProtectedComponent>
+          ),
+        },
 
-        { path: "recipes/:recipeId", element: <RecipiesForm /> },
+        {
+          path: "recipes/:recipeId",
+          element: (
+            <AdminProtectedComponent>
+              <RecipiesForm />
+            </AdminProtectedComponent>
+          ),
+        },
         { path: "recipes", element: <RecipesList /> },
         { path: "recipe-Data", element: <RecipiesData /> },
-        { path: "categories", element: <CategoriesList /> },
+        {
+          path: "categories",
+          element: (
+            <AdminProtectedComponent>
+              <CategoriesList />
+            </AdminProtectedComponent>
+          ),
+        },
         {
           path: "recipes/recipe-form",
           element: <RecipiesForm />,
@@ -65,10 +88,10 @@ function App() {
         {
           path: "favorites",
           element: (
-            <ProtectedRoute>
+            <UserProtectedComponent>
               {" "}
               <Favourites />
-            </ProtectedRoute>
+            </UserProtectedComponent>
           ),
         },
       ],
