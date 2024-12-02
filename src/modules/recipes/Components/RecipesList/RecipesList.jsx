@@ -158,12 +158,12 @@ export default function RecipesList() {
             <input
               type="text"
               placeholder="Search here..."
-              className="form-control"
+              className="form-control input"
               onChange={getNameValue}
             />
           </div>
           <div className="col-md-3">
-            <select onChange={getTagValue} className="form-control">
+            <select onChange={getTagValue} className="form-control input">
               <option value="">Tags</option>
               {Tags.map(({ id, name }) => (
                 <option key={id} value={id}>
@@ -174,7 +174,7 @@ export default function RecipesList() {
           </div>
           <div className="col-md-3">
             {" "}
-            <select onChange={getCatValue} className="form-control">
+            <select onChange={getCatValue} className="form-control input">
               <option value="">Categories</option>
               {CategoriesList.map(({ id, name }) => (
                 <option key={id} value={id}>

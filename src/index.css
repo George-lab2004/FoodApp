@@ -315,17 +315,17 @@
 }
 
 /* Filters Section */
-.row input.form-control,
-.row select.form-control {
+.row input.input,
+.row select.input {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   margin-bottom: 10px;
 }
 
-.row input.form-control:focus,
-.row select.form-control:focus {
-  border-color: #28a745; /* Green border on focus */
+.row input.input:focus,
+.row select.input:focus {
+  border-color: #28a745;
   outline: none;
   box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
 }
@@ -345,7 +345,7 @@
 .pagination .page-link {
   padding: 10px 15px;
   text-decoration: none;
-  color: #007bff; /* Blue links */
+  color: #007bff;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -380,7 +380,7 @@
 }
 
 .fa-trash:hover {
-  color: #d9534f; /* Red on hover */
+  color: #d9534f;
 }
 
 .fa-edit {
@@ -389,7 +389,7 @@
 }
 
 .fa-edit:hover {
-  color: #ffc107; /* Yellow on hover */
+  color: #ffc107;
 }
 
 .fa-heart {
