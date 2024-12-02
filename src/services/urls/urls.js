@@ -5,6 +5,11 @@ export const axiosInstance = axios.create({
   baseURL,
   headers: { Authorization: localStorage.getItem("token") },
 });
+
+axiosInstance.interceptors.request.use((config) => {
+  config.headers.Authorization = localStorage.getItem("token");
+  return config;
+});
 export const IMAGE_PATHS = "https://upskilling-egypt.com:3006";
 export const IMAGE_URL = "https://upskilling-egypt.com:3006";
 
