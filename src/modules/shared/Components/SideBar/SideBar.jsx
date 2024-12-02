@@ -124,6 +124,9 @@ export default function SideBar() {
             </MenuItem>
 
             <MenuItem
+              onClick={() => {
+                localStorage.removeItem("token");
+              }}
               icon={
                 <div className="fa-solid fa-right-from-bracket mx-3 menu-item"></div>
               }
