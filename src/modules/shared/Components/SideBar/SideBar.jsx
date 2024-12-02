@@ -67,8 +67,8 @@ export default function SideBar() {
           <Menu className="vh-100">
             <MenuItem
               onClick={toggleCollapse}
-              icon={<img className="w-100" src={logo} alt="" />}
-              className="my-4 mx-auto"
+              icon={<img className="w-100 " src={logo} alt="" />}
+              className="my-4 menu-item-img mx-auto"
             ></MenuItem>
             <MenuItem
               icon={<div className="fa fa-home mx-3 menu-item"></div>}

@@ -1,6 +1,6 @@
-import header from "../../../../assets/header.svg";
+// import header from "../../../../assets/header.svg";
 
-export default function Header({ title, description }) {
+export default function Header({ title, description, header }) {
   return (
     <div className="headercontainer p-5 row d-flex  align-items-center m-4 ">
       <div className="caption col-md-6 text-white ">

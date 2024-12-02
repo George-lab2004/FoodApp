@@ -6,6 +6,7 @@ import NoData from "../../../shared/Components/NoData/NoData";
 import { axiosInstance, CATEGORY_URLS } from "../../../../services/urls/urls";
 import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
+import header from "../../../../assets/Header2.svg";
 
 export default function CategoriesList() {
   const {
@@ -113,6 +114,7 @@ export default function CategoriesList() {
       <Header
         title="Categories List"
         description="You can now add your items that any user can order from the Application, and you can edit them"
+        header={header}
       />
       <ConfirmDelete
         show={show}
@@ -206,11 +208,30 @@ export default function CategoriesList() {
                 </tr>
               </thead>
               <tbody>
-                {categoriesList.map((category) => (
+                {categoriesList.map((category, index) => (
                   <tr key={category.id}>
-                    <td>{category.name}</td>
-                    <td>{category.creationDate}</td>
-                    <td>
+                    <td
+                      style={{
+                        backgroundColor:
+                          index % 2 === 0 ? "#ffffff" : "#e2e5eb",
+                      }}
+                    >
+                      {category.name}
+                    </td>
+                    <td
+                      style={{
+                        backgroundColor:
+                          index % 2 === 0 ? "#ffffff" : "#e2e5eb",
+                      }}
+                    >
+                      {category.creationDate}
+                    </td>
+                    <td
+                      style={{
+                        backgroundColor:
+                          index % 2 === 0 ? "#ffffff" : "#e2e5eb",
+                      }}
+                    >
                       <i
                         className="fa fa-trash text-danger me-4"
                         onClick={() => handleShow(category.id)}

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import Header from "../../shared/Components/Header/Header";
+import header2 from "../../../assets/Header2.svg";
+
 import {
   axiosInstance,
   FAVORITES_URLS,
@@ -49,6 +51,7 @@ export default function Favourites() {
       <Header
         title="Favorite Items"
         description="You can now add your items that any user can order from the Application and you can edit."
+        header={header2}
       />
       <div className="container my-5">
         {loading ? (

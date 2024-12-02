@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../../context/AuthContext";
 import Header from "../../../shared/Components/Header/Header";
+import header from "../../../../assets/header.svg";
 
 export default function Dashboard() {
   const { loginData } = useContext(AuthContext);
@@ -12,6 +13,7 @@ export default function Dashboard() {
         description={
           "This is a welcoming screen for the entry of the application , you can now see the options"
         }
+        header={header}
       />
       <header className="header-wrapper">
         <div className="conten-wrapper">

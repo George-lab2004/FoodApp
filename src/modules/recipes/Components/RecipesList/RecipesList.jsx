@@ -3,6 +3,8 @@ import Header from "../../../shared/Components/Header/Header";
 import ConfirmDelete from "../../../shared/Components/ConfrimDelete/ConfirmDelete";
 import { toast } from "react-toastify";
 import NoData from "../../../shared/Components/NoData/NoData";
+import header from "../../../../assets/Header2.svg";
+
 import {
   axiosInstance,
   CATEGORY_URLS,
@@ -128,6 +130,7 @@ export default function RecipesList() {
       <Header
         title="Recipies items"
         description="You can now add your items that any user can order it from the Application and you can edit"
+        header={header}
       />
       <ConfirmDelete
         show={show}
@@ -198,38 +201,69 @@ export default function RecipesList() {
                 </tr>
               </thead>
               <tbody>
-                {RecipesList.map((recipes) => (
+                {RecipesList.map((recipes, index) => (
                   <tr key={recipes.id}>
-                    <td>{recipes.name}</td>
-                    <td>
+                    <td
+                      style={{
+                        backgroundColor:
+                          index % 2 === 0 ? "#f9f9f9" : "#e2e5eb",
+                      }}
+                    >
+                      {recipes.name}
+                    </td>
+                    <td
+                      style={{
+                        backgroundColor:
+                          index % 2 === 0 ? "#f9f9f9" : "#e2e5eb",
+                      }}
+                    >
                       <img
                         src={`${IMAGE_PATHS}/${recipes.imagePath}`}
                         alt={recipes.name}
                         className="w-25"
                       />
                     </td>
-                    <td>{recipes.price} $</td>
-                    <td>{recipes.description}</td>
-                    <td>{recipes.tag.id}</td>
-                    <td>{recipes.category[0]?.name}</td>
-                    {/* <td>
-                      <i
-                        className="fa fa-trash text-danger me-4"
-                        onClick={() => handleShow(recipes.id)}
-                        aria-hidden="true"
-                      ></i>
-                      <Link to={`/Dashboard/recipes/${recipes?.id}`}>
+                    <td
+                      style={{
+                        backgroundColor:
+                          index % 2 === 0 ? "#f9f9f9" : "#e2e5eb",
+                      }}
+                    >
+                      {recipes.price} $
+                    </td>
+                    <td
+                      style={{
+                        backgroundColor:
+                          index % 2 === 0 ? "#f9f9f9" : "#e2e5eb",
+                      }}
+                    >
+                      {recipes.description}
+                    </td>
+                    <td
+                      style={{
+                        backgroundColor:
+                          index % 2 === 0 ? "#f9f9f9" : "#e2e5eb",
+                      }}
+                    >
+                      {recipes.tag.id}
+                    </td>
+                    <td
+                      style={{
+                        backgroundColor:
+                          index % 2 === 0 ? "#f9f9f9" : "#e2e5eb",
+                      }}
+                    >
+                      {recipes.category[0]?.name}
+                    </td>
+                    {loginData?.userGroup !== "SystemUser" ? (
+                      <td
+                        style={{
+                          backgroundColor:
+                            index % 2 === 0 ? "#f9f9f9" : "#e2e5eb",
+                        }}
+                      >
                         <i
-                          className="fa fa-edit text-warning"
-                          aria-hidden="true"
-                        ></i>
-                      </Link>
-                    </td> */}
-
-                    {loginData?.userGroup != "SystemUser" ? (
-                      <td>
-                        <i
-                          className="fa fa-trash me-3 text-danger "
+                          className="fa fa-trash me-3 text-danger"
                           onClick={() => handleShow(recipes.id)}
                         ></i>
                         <Link to={`/Dashboard/recipes/${recipes?.id}`}>
@@ -237,7 +271,12 @@ export default function RecipesList() {
                         </Link>
                       </td>
                     ) : (
-                      <td>
+                      <td
+                        style={{
+                          backgroundColor:
+                            index % 2 === 0 ? "#f9f9f9" : "#e2e5eb",
+                        }}
+                      >
                         <i
                           className="fa fa-heart text-danger cursor"
                           onClick={() => addToFavorite(recipes.id)}

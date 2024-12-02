@@ -3,6 +3,8 @@ import Header from "../../../shared/Components/Header/Header";
 import { useEffect, useState } from "react";
 import NoData from "../../../shared/Components/NoData/NoData";
 import noData2 from "../../../../assets/noData.svg";
+import header from "../../../../assets/Header2.svg";
+
 import {
   axiosInstance,
   IMAGE_PATHS,
@@ -80,6 +82,7 @@ export default function UsersList() {
       <Header
         title="Users List"
         description="Manage users and view their details"
+        header={header}
       />
       <ConfirmDelete
         show={show}
@@ -108,10 +111,22 @@ export default function UsersList() {
                 </tr>
               </thead>
               <tbody>
-                {usersList.map((user) => (
+                {usersList.map((user, index) => (
                   <tr key={user.id}>
-                    <td>{user.userName}</td>
-                    <td>
+                    <td
+                      style={{
+                        backgroundColor:
+                          index % 2 === 0 ? "#ffffff" : "#e2e5eb",
+                      }}
+                    >
+                      {user.userName}
+                    </td>
+                    <td
+                      style={{
+                        backgroundColor:
+                          index % 2 === 0 ? "#ffffff" : "#e2e5eb",
+                      }}
+                    >
                       {user.imagePath ? (
                         <img
                           src={`${IMAGE_PATHS}/${user.imagePath}`}
@@ -122,10 +137,36 @@ export default function UsersList() {
                         <img className="w-25" src={noData2} alt={user.name} />
                       )}
                     </td>
-                    <td>{user.phoneNumber}</td>
-                    <td>{user.email}</td>
-                    <td>{user.country}</td>
-                    <td>
+                    <td
+                      style={{
+                        backgroundColor:
+                          index % 2 === 0 ? "#ffffff" : "#e2e5eb",
+                      }}
+                    >
+                      {user.phoneNumber}
+                    </td>
+                    <td
+                      style={{
+                        backgroundColor:
+                          index % 2 === 0 ? "#ffffff" : "#e2e5eb",
+                      }}
+                    >
+                      {user.email}
+                    </td>
+                    <td
+                      style={{
+                        backgroundColor:
+                          index % 2 === 0 ? "#ffffff" : "#e2e5eb",
+                      }}
+                    >
+                      {user.country}
+                    </td>
+                    <td
+                      style={{
+                        backgroundColor:
+                          index % 2 === 0 ? "#ffffff" : "#e2e5eb",
+                      }}
+                    >
                       <i
                         className="fa fa-trash text-danger me-4"
                         aria-hidden="true"
@@ -135,6 +176,7 @@ export default function UsersList() {
                   </tr>
                 ))}
               </tbody>
+              #e2e5eb
             </table>
           </div>
         ) : (

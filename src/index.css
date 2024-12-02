@@ -1,4 +1,5 @@
 /* Login */
+
 .auth-container {
   background-image: url(./assets/auth.jpg) !important;
   background-size: cover !important;
@@ -268,10 +269,144 @@
   right: 10px;
   cursor: pointer;
 }
-.table tbody tr:nth-child(even) {
-  background-color: #e2e5eb !important; /* Light grey */
+
+/* General Table Styling */
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 20px;
+  font-family: Arial, sans-serif;
+  border: none; /* Remove thin lines separating cells */
 }
 
-.table tbody tr:nth-child(odd) {
-  background-color: white !important; /* White */
+.table th,
+.table td {
+  text-align: left;
+  padding: 12px;
+  border: none; /* Remove inner cell borders */
+}
+
+.table thead th {
+  background-color: #e2e5eb; /* Light gray for table header */
+  color: #333; /* Darker text for readability */
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  height: 88px; /* Increase header height */
+  vertical-align: middle; /* Center text vertically */
+}
+
+/* Add border radius to the first and last header cells */
+.table thead th:first-child {
+  border-top-left-radius: 8px;
+}
+
+.table thead th:last-child {
+  border-top-right-radius: 8px;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f1f1; /* Highlight on hover */
+}
+
+.table img {
+  border-radius: 8px;
+  max-width: 60px;
+  height: auto;
+}
+
+/* Filters Section */
+.row input.form-control,
+.row select.form-control {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.row input.form-control:focus,
+.row select.form-control:focus {
+  border-color: #28a745; /* Green border on focus */
+  outline: none;
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+}
+
+/* Pagination Styling */
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.pagination .page-item {
+  margin: 0 5px;
+}
+
+.pagination .page-link {
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #007bff; /* Blue links */
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.pagination .page-link:hover {
+  background-color: #f1f1f1;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+/* Buttons */
+.btn-success {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}
+
+/* Icons */
+.fa-trash {
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.fa-trash:hover {
+  color: #d9534f; /* Red on hover */
+}
+
+.fa-edit {
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.fa-edit:hover {
+  color: #ffc107; /* Yellow on hover */
+}
+
+.fa-heart {
+  cursor: pointer;
+  transition: transform 0.3s, color 0.3s;
+}
+
+.fa-heart:hover {
+  color: #e3342f;
+  transform: scale(1.2);
+}
+@media (max-width: 576px) {
+  .menu-item-img img {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    position: absolute;
+    left: 20%;
+  }
 }
