@@ -1,7 +1,7 @@
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../../assets/3.png";
-import logo2 from "../../../../assets/logo1.png";
+import logo2 from "../../../../assets/logo1.avif";
 
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../../../context/AuthContext";
