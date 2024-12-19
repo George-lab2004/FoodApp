@@ -15,18 +15,14 @@ import MasterLayout from "./modules/shared/Components/MasterLayout/MasterLayout"
 import "./index.css";
 import "./App.css";
 import { ToastContainer } from "react-toastify";
-import { useContext, useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
 import ProtectedRoute from "./modules/shared/Components/ProtectedRoute/ProtectedRoute";
 import Dashboard from "./modules/Dashboard/components/Dashboard/Dashboard";
 import RecipiesForm from "./modules/recipes/Components/RecipiesForm/RecipiesForm";
 import Verify from "./modules/authentication/components/Verify/Verify";
-import { AuthContext } from "./context/AuthContext";
 import Favourites from "./modules/Favourites/Components/Favourites";
 import AdminProtectedComponent from "./modules/shared/Components/ProtectedComponent/AdminProtected";
 import UserProtectedComponent from "./modules/shared/Components/ProtectedComponent/UserProtected";
 function App() {
-  const { loginData } = useContext(AuthContext);
   // eslint-disable-next-line no-unused-vars
   const routes = createBrowserRouter([
     {

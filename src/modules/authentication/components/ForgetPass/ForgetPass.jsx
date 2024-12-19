@@ -1,7 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import logo from "../../../../assets/logo1.png";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";

@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import axios from "axios";
-import logo from "../../../../assets/logo1.png";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance, USERS_URLS } from "../../../../services/urls/urls";
